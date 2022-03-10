@@ -37,6 +37,15 @@ output "wp_cloudwatch_logs_name" {
   value       = aws_cloudwatch_log_group.tf_waypoint_logs.id
 }
 
+resource "aws_iam_role" "tf_waypoint_iam_role" {
+  name = "ecr-example-nodejs"
+}
+
+output "wp_iam_role_name" {
+  description = "output the name of my execution IAM role"
+  value       = aws_iam_role.tf_waypoint_iam_role.id
+}
+
 #Other outputs needed are things that come from these create methods.
 #Noting here so we can work through them
 # resourceClusterCreate
@@ -51,15 +60,8 @@ output "wp_cloudwatch_logs_name" {
 #https://support.hashicorp.com/hc/en-us/articles/360061289934-How-to-Import-Resources-into-a-Remote-State-Managed-by-Terraform-Cloud
 # Done:
 # terraform import aws_ecs_cluster.tf_waypoint_cluster waypoint
+# terraform import aws_cloudwatch_log_group.tf_waypoint_logs waypoint-logs
 
-
-# resource "aws_iam_role" "tf_waypoint_iam_role" {
-#   name = "ecr-example-nodejs"
-# }
-
-# resource "aws_cloudwatch_log_group" "tf_waypoint_logs" {
-#   name = "waypoint-logs"
-# }
 
 # resource "aws_security_group" "allow_tls" {
 #   name        = "example-nodejs-inbound-internal" //or should it be the one provided by the external security group "example-nodejs-inbound"
