@@ -3,7 +3,7 @@ terraform {
     hostname     = "app.terraform.io"
     organization = "example-org-615f54"
     workspaces {
-        name = "luces-waypoint"
+      name = "luces-waypoint"
     }
   }
   required_providers {
@@ -23,12 +23,12 @@ resource "aws_ecs_cluster" "tf_waypoint_cluster" {
   name = "waypoint"
 }
 
-output "cluster_name" {
+output "wp_cluster_name" {
   description = "output the name of my ecs cluster"
   value       = aws_ecs_cluster.tf_waypoint_cluster.id
 }
 
-#Other outputs needed are things that come from these create methods. 
+#Other outputs needed are things that come from these create methods.
 #Noting here so we can work through them
 # resourceClusterCreate
 # resourceExecutionRoleCreate
