@@ -3,7 +3,7 @@ terraform {
     hostname     = "app.terraform.io"
     organization = "example-org-615f54"
     workspaces {
-        name = "luces-waypoint"
+      name = "luces-waypoint"
     }
   }
   required_providers {
@@ -23,10 +23,21 @@ resource "aws_ecs_cluster" "tf_waypoint_cluster" {
   name = "waypoint"
 }
 
-output "cluster_name" {
+output "wp_cluster_name" {
   description = "output the name of my ecs cluster"
   value       = aws_ecs_cluster.tf_waypoint_cluster.id
 }
+
+#Other outputs needed are things that come from these create methods.
+#Noting here so we can work through them
+# resourceClusterCreate
+# resourceExecutionRoleCreate
+# resourceInternalSecurityGroupsCreate
+# resourceExternalSecurityGroupsCreate
+# resourceLogGroupCreate
+# resourceServiceSubnetsDiscover
+# resourceAlbSubnetsDiscover
+# resourceAlbCreate
 
 #https://support.hashicorp.com/hc/en-us/articles/360061289934-How-to-Import-Resources-into-a-Remote-State-Managed-by-Terraform-Cloud
 # Done:
