@@ -28,34 +28,120 @@ output "wp_cluster_name" {
   value       = aws_ecs_cluster.tf_waypoint_cluster.id
 }
 
-#Other outputs needed are things that come from these create methods.
-#Noting here so we can work through them
-# resourceClusterCreate
-# resourceExecutionRoleCreate
-# resourceInternalSecurityGroupsCreate
-# resourceExternalSecurityGroupsCreate
-# resourceLogGroupCreate
-# resourceServiceSubnetsDiscover
-# resourceAlbSubnetsDiscover
-# resourceAlbCreate
+resource "aws_cloudwatch_log_group" "tf_waypoint_logs" {
+  name = "waypoint-logs"
+}
+
+output "wp_cloudwatch_logs_name" {
+  description = "output the name of my cloudwatch logs"
+  value       = aws_cloudwatch_log_group.tf_waypoint_logs.id
+}
+
+resource "aws_iam_role" "tf_waypoint_iam_role" {
+  name               = "ecr-example-nodejs"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+        "Sid": "",
+        "Effect": "Allow",
+        "Principal": {
+            "Service": "ecs-tasks.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+output "wp_iam_role_name" {
+  description = "output the name of my execution IAM role"
+  value       = aws_iam_role.tf_waypoint_iam_role.id
+}
+
+
+data "aws_vpc" "inbound_internal" {
+  id = "vpc-a2f9c4c4"
+}
+
+resource "aws_security_group" "tf_waypoint_inbound_internal" {
+  vpc_id = data.aws_vpc.inbound_internal.id
+  # id     = "sg-0166caeecca88094f"
+  # name   = "example-nodejs-inbound-internal"
+  description = "created by waypoint"
+}
+
+resource "aws_security_group" "example_nodejs_inbound" {
+  vpc_id      = data.aws_vpc.inbound_internal.id
+  description = "created by waypoint"
+}
+
+output "wp_security_inbound_internal" {
+  value = aws_security_group.tf_waypoint_inbound_internal.id
+}
+
+output "wp_security_group_app" {
+  value = aws_security_group.tf_waypoint_inbound_internal.id
+}
+
+resource "aws_iam_role" "ecs_role_name" {
+  name = "ecr-example-nodejs"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        "Sid" : "",
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "ecs-tasks.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+output "wp_execution_role_arn" {
+  value = aws_iam_role.ecs_role_name.arn
+}
+
+# supposed to be deprecated but also not working for our version?
+data "aws_subnet_ids" "default_subnets" {
+  vpc_id = data.aws_vpc.inbound_internal.id
+}
+
+output "wp_default_subnets" {
+  value = data.aws_subnet_ids.default_subnets.ids
+}
+
+resource "aws_lb" "app_lb" {
+  # "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-west-2:206958406631:loadbalancer/app/waypoint-ecs-example-nodejs/ab3df97526cce724",
+  # "DNSName": "waypoint-ecs-example-nodejs-840731168.us-west-2.elb.amazonaws.com",
+  # "CanonicalHostedZoneId": "Z1H1FL5HABSF5",
+  # "CreatedTime": "2022-03-09T21:25:16.310000+00:00",
+  # "LoadBalancerName": "waypoint-ecs-example-nodejs",
+}
+
+output "wp_alb_arn" {
+  value = aws_lb.app_lb.arn
+}
 
 #https://support.hashicorp.com/hc/en-us/articles/360061289934-How-to-Import-Resources-into-a-Remote-State-Managed-by-Terraform-Cloud
 # Done:
 # terraform import aws_ecs_cluster.tf_waypoint_cluster waypoint
+# terraform import aws_cloudwatch_log_group.tf_waypoint_logs waypoint-logs
+# terraform import aws_iam_role.tf_waypoint_iam_role ecr-example-nodejs
+# terraform import aws_security_group.tf_waypoint_inbound_internal sg-0166caeecca88094f
+# terraform import aws_security_group.tf_waypoint_inbound sg-0dc34cc1d070b7882
 
+# Speculative plans are not listed the platform's UI. But the url to each of those plans can be found in the PR's checks that ran after each commit.
 
-# resource "aws_iam_role" "tf_waypoint_iam_role" {
-#   name = "ecr-example-nodejs"
-# }
-
-# resource "aws_cloudwatch_log_group" "tf_waypoint_logs" {
-#   name = "waypoint-logs"
-# }
-
-# resource "aws_security_group" "allow_tls" {
-#   name        = "example-nodejs-inbound-internal" //or should it be the one provided by the external security group "example-nodejs-inbound"
-#   description = "Allow TLS inbound traffic"
-# }
+#Other outputs needed are things that come from these create methods.
+#Noting here so we can work through them
+# resourceAlbCreate
 
 
 
