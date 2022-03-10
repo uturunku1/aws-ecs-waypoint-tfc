@@ -108,6 +108,15 @@ output "wp_execution_role_arn" {
   value = aws_iam_role.ecs_role_name.arn
 }
 
+# supposed to be deprecated but also not working for our version?
+data "aws_subnet_ids" "default_subnets" {
+  vpc_id = data.aws_vpc.inbound_internal.id
+}
+
+output "wp_default_subnets" {
+  value = data.aws_subnet_ids.default_subnets.ids
+}
+
 #https://support.hashicorp.com/hc/en-us/articles/360061289934-How-to-Import-Resources-into-a-Remote-State-Managed-by-Terraform-Cloud
 # Done:
 # terraform import aws_ecs_cluster.tf_waypoint_cluster waypoint
