@@ -19,21 +19,23 @@ provider "aws" {
   region  = "us-west-2"
 }
 
+resource "aws_ecs_cluster" "tf_waypoint_cluster" {
+  name = "waypoint"
+}
+
+output "cluster_name" {
+  description = "output the name of my ecs cluster"
+  value       = aws_s3_cluster.tf_waypoint_cluster.id
+}
+
+#https://support.hashicorp.com/hc/en-us/articles/360061289934-How-to-Import-Resources-into-a-Remote-State-Managed-by-Terraform-Cloud
+# Done:
+# terraform import aws_ecs_cluster.tf_waypoint_cluster waypoint
+
 
 # resource "aws_iam_role" "tf_waypoint_iam_role" {
 #   name = "ecr-example-nodejs"
 # }
-
-# resource "aws_ecs_cluster" "tf_waypoint_cluster" {
-#   name = "waypoint"
-# }
-
-# output "cluster_name" {
-#   description = "output the name of my ecs cluster"
-#   value       = aws_s3_cluster.tf_waypoint.id
-# }
-
-# terraform import aws_ecs_cluster.tf_waypoint waypoint
 
 # resource "aws_cloudwatch_log_group" "tf_waypoint_logs" {
 #   name = "waypoint-logs"
