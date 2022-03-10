@@ -73,18 +73,18 @@ resource "aws_security_group" "tf_waypoint_inbound_internal" {
   description = "created by waypoint"
 }
 
-#resource "aws_security_group" "example_nodejs_inbound" {
-#  vpc_id = aws_vpc.inbound_internal.id
-#  # name   = "example-nodejs-inbound"
-#  # description = "created by waypoint"
-#}
+resource "aws_security_group" "example_nodejs_inbound" {
+  vpc_id      = data.aws_vpc.inbound_internal.id
+  description = "created by waypoint"
+}
 
 output "wp_security_inbound_internal" {
   value = aws_security_group.tf_waypoint_inbound_internal.id
 }
-#output "wp_security_inbound" {
-#  value = aws_security_group.tf_waypoint_inbound.id
-#}
+
+output "wp_security_group_app" {
+  value = aws_security_group.tf_waypoint_inbound_internal.id
+}
 
 #https://support.hashicorp.com/hc/en-us/articles/360061289934-How-to-Import-Resources-into-a-Remote-State-Managed-by-Terraform-Cloud
 # Done:
@@ -98,11 +98,7 @@ output "wp_security_inbound_internal" {
 
 #Other outputs needed are things that come from these create methods.
 #Noting here so we can work through them
-# resourceClusterCreate
 # resourceExecutionRoleCreate
-# resourceInternalSecurityGroupsCreate
-# resourceExternalSecurityGroupsCreate
-# resourceLogGroupCreate
 # resourceServiceSubnetsDiscover
 # resourceAlbSubnetsDiscover
 # resourceAlbCreate
