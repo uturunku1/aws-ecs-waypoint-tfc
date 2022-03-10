@@ -62,28 +62,29 @@ output "wp_iam_role_name" {
 }
 
 
-resource "aws_vpc" "inbound_internal" {
-  cidr_block = "172.31.0.0/16"
+data "aws_vpc" "inbound_internal" {
+  id = "vpc-a2f9c4c4"
 }
 
 resource "aws_security_group" "tf_waypoint_inbound_internal" {
-  vpc_id      = aws_vpc.inbound_internal.id
-  name        = "example-nodejs-inbound-internal"
+  vpc_id = data.aws_vpc.inbound_internal.id
+  # id     = "sg-0166caeecca88094f"
+  # name   = "example-nodejs-inbound-internal"
   description = "created by waypoint"
 }
 
-resource "aws_security_group" "tf_waypoint_inbound" {
-  vpc_id      = aws_vpc.inbound_internal.id
-  name        = "example-nodejs-inbound"
-  description = "created by waypoint"
-}
+#resource "aws_security_group" "example_nodejs_inbound" {
+#  vpc_id = aws_vpc.inbound_internal.id
+#  # name   = "example-nodejs-inbound"
+#  # description = "created by waypoint"
+#}
 
 output "wp_security_inbound_internal" {
   value = aws_security_group.tf_waypoint_inbound_internal.id
 }
-output "wp_security_inbound" {
-  value = aws_security_group.tf_waypoint_inbound.id
-}
+#output "wp_security_inbound" {
+#  value = aws_security_group.tf_waypoint_inbound.id
+#}
 
 #https://support.hashicorp.com/hc/en-us/articles/360061289934-How-to-Import-Resources-into-a-Remote-State-Managed-by-Terraform-Cloud
 # Done:
