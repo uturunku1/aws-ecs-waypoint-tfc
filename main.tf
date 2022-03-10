@@ -25,7 +25,7 @@ resource "aws_ecs_cluster" "tf_waypoint_cluster" {
 
 output "cluster_name" {
   description = "output the name of my ecs cluster"
-  value       = aws_s3_cluster.tf_waypoint_cluster.id
+  value       = aws_ecs_cluster.tf_waypoint_cluster.id
 }
 
 #https://support.hashicorp.com/hc/en-us/articles/360061289934-How-to-Import-Resources-into-a-Remote-State-Managed-by-Terraform-Cloud
