@@ -69,13 +69,13 @@ resource "aws_vpc" "inbound_internal" {
 resource "aws_security_group" "tf_waypoint_inbound_internal" {
   vpc_id      = aws_vpc.inbound_internal.id
   name        = "example-nodejs-inbound-internal"
-  Description = "created by waypoint"
+  description = "created by waypoint"
 }
 
 resource "aws_security_group" "tf_waypoint_inbound" {
   vpc_id      = aws_vpc.inbound_internal.id
   name        = "example-nodejs-inbound"
-  Description = "created by waypoint"
+  description = "created by waypoint"
 }
 
 output "wp_security_inbound_internal" {
