@@ -28,6 +28,15 @@ output "wp_cluster_name" {
   value       = aws_ecs_cluster.tf_waypoint_cluster.id
 }
 
+resource "aws_cloudwatch_log_group" "tf_waypoint_logs" {
+  name = "waypoint-logs"
+}
+
+output "wp_cloudwatch_logs_name" {
+  description = "output the name of my cloudwatch logs"
+  value       = aws_cloudwatch_log_group.tf_waypoint_logs.id
+}
+
 #Other outputs needed are things that come from these create methods.
 #Noting here so we can work through them
 # resourceClusterCreate
