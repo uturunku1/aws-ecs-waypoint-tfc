@@ -117,6 +117,18 @@ output "wp_default_subnets" {
   value = data.aws_subnet_ids.default_subnets.ids
 }
 
+resource "aws_lb" "app_lb" {
+  # "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-west-2:206958406631:loadbalancer/app/waypoint-ecs-example-nodejs/ab3df97526cce724",
+  # "DNSName": "waypoint-ecs-example-nodejs-840731168.us-west-2.elb.amazonaws.com",
+  # "CanonicalHostedZoneId": "Z1H1FL5HABSF5",
+  # "CreatedTime": "2022-03-09T21:25:16.310000+00:00",
+  # "LoadBalancerName": "waypoint-ecs-example-nodejs",
+}
+
+output "wp_alb_arn" {
+  value = aws_lb.app_lb.arn
+}
+
 #https://support.hashicorp.com/hc/en-us/articles/360061289934-How-to-Import-Resources-into-a-Remote-State-Managed-by-Terraform-Cloud
 # Done:
 # terraform import aws_ecs_cluster.tf_waypoint_cluster waypoint
@@ -129,8 +141,6 @@ output "wp_default_subnets" {
 
 #Other outputs needed are things that come from these create methods.
 #Noting here so we can work through them
-# resourceServiceSubnetsDiscover
-# resourceAlbSubnetsDiscover
 # resourceAlbCreate
 
 
