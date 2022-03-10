@@ -37,29 +37,38 @@ output "wp_cloudwatch_logs_name" {
   value       = aws_cloudwatch_log_group.tf_waypoint_logs.id
 }
 
-resource "aws_iam_role" "tf_waypoint_iam_role" {
-  name = "ecr-example-nodejs"
+# resource "aws_iam_role" "tf_waypoint_iam_role" {
+#   name = "ecr-example-nodejs"
+# }
+
+# output "wp_iam_role_name" {
+#   description = "output the name of my execution IAM role"
+#   value       = aws_iam_role.tf_waypoint_iam_role.id
+# }
+
+data "aws_security_group" "selected" {
+  id = "sg-60170812"
 }
 
-output "wp_iam_role_name" {
-  description = "output the name of my execution IAM role"
-  value       = aws_iam_role.tf_waypoint_iam_role.id
-}
 
-resource "aws_vpc" "mainvpc" {
-  cidr_block = "172.31.0.0/16"
-}
-#attempting to run terraform import aws_default_security_group.tf_waypoint_security_default sg-60170812
-resource "aws_default_security_group" "tf_waypoint_security_default" {
-  vpc_id = aws_vpc.mainvpc.id
-  # name        = "example-nodejs-inbound-internal" //or should it be the one provided by the external security group "example-nodejs-inbound"
-  description = "Allow TLS inbound traffic"
-}
+# resource "aws_vpc" "main" {
+#   cidr_block = "172.31.0.0/16"
+# }
 
-output "wp_security_group_internal" {
-  description = "output the name of security internal group"
-  value       = aws_default_security_group.tf_waypoint_security_default.id
-}
+# resource "aws_security_group" "tf_waypoint_security_default" {
+#   name        = "example-nodejs-inbound-internal"
+#   vpc_id      = aws_vpc.main.id
+# }
+
+# resource "aws_default_security_group" "tf_waypoint_security_default" {
+#   vpc_id = aws_vpc.main.id
+#   # name        = "example-nodejs-inbound-internal"
+# }
+
+# output "wp_security_group" {
+#   description = "output the name of security internal group"
+#   value       = aws_default_security_group.tf_waypoint_security_default.id
+# }
 
 #https://support.hashicorp.com/hc/en-us/articles/360061289934-How-to-Import-Resources-into-a-Remote-State-Managed-by-Terraform-Cloud
 # Done:
