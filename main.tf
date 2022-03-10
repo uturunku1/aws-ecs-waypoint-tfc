@@ -86,6 +86,28 @@ output "wp_security_group_app" {
   value = aws_security_group.tf_waypoint_inbound_internal.id
 }
 
+resource "aws_iam_role" "ecs_role_name" {
+  name = "ecr-example-nodejs"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        "Sid" : "",
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "ecs-tasks.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+output "wp_execution_role_arn" {
+  value = aws_iam_role.ecs_role_name.arn
+}
+
 #https://support.hashicorp.com/hc/en-us/articles/360061289934-How-to-Import-Resources-into-a-Remote-State-Managed-by-Terraform-Cloud
 # Done:
 # terraform import aws_ecs_cluster.tf_waypoint_cluster waypoint
@@ -98,7 +120,6 @@ output "wp_security_group_app" {
 
 #Other outputs needed are things that come from these create methods.
 #Noting here so we can work through them
-# resourceExecutionRoleCreate
 # resourceServiceSubnetsDiscover
 # resourceAlbSubnetsDiscover
 # resourceAlbCreate
